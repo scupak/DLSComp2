@@ -1,0 +1,65 @@
+version:  "3.9"
+
+services:
+
+  loadbalancer: 
+    build: 
+      context:  .
+      dockerfile:  "LoadBalancer/Dockerfile"
+    ports:
+      - 9050:80
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://loadbalancer/LoadBalancer/ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  searchapi: 
+    build: 
+      context:  .
+      dockerfile:  "SearchAPI/Dockerfile"
+    volumes:
+      - C:/data:/data
+    deploy:
+      mode: replicated
+      replicas: 5
+      endpoint_mode: dnsrr
+    restart: on-failure 
+    depends_on:
+       loadbalancer:
+        condition: service_healthy
+    links: 
+        - loadbalancer
+
+  consolesearch:
+    build:
+      context:  .
+      dockerfile:  "ConsoleSearchv2/Dockerfile"
+    deploy:
+      mode: replicated
+      replicas: 5
+      endpoint_mode: dnsrr
+    stdin_open: true
+    tty: true    
+    restart: on-failure
+    depends_on:
+      loadbalancer:
+        condition: service_healthy
+    links:
+      - loadbalancer
+
+  websearch:
+    build: 
+      context:  .
+      dockerfile:  "WebSearch/Dockerfile"
+    restart: on-failure 
+    depends_on:
+       loadbalancer:
+        condition: service_healthy
+    links: 
+        - loadbalancer
+    ports:
+      - 9002:80
+
+volumes:
+  data:
