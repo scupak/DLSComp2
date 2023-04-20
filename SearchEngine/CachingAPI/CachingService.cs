@@ -2,25 +2,27 @@
 using NRedisStack;
 using NRedisStack.RedisStackCommands;
 using StackExchange.Redis;
+using System.Threading.Tasks;
 
 public class CachingService
 {
-    public static void SetData<T>(string key, T data)
+    public static async Task<bool> SetData<T>(string key, T data)
     {
         using var redis = ConnectionMultiplexer.Connect("redis");
         IDatabase db = redis.GetDatabase();
-        db.StringSet(key, Newtonsoft.Json.JsonConvert.SerializeObject(data));
+        bool res =  await db.StringSetAsync(key, Newtonsoft.Json.JsonConvert.SerializeObject(data));
         redis.Close();
+        return res;
     }
 
-    public static T GetData<T>(string key)
+    public static async Task<T> GetData<T>(string key)
     {
         using (var redis = ConnectionMultiplexer.Connect("redis"))
         {
             try
             {
                 IDatabase db = redis.GetDatabase();
-                var res = db.StringGet(key);
+                var res = await db.StringGetAsync(key);
 
                 redis.Close();
                 if (res.IsNull)

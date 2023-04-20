@@ -20,7 +20,7 @@ services:
       timeout: 10s
       retries: 5
 
-  searchapi: 
+  searchapi:
     build: 
       context:  .
       dockerfile:  "SearchAPI/Dockerfile"
@@ -58,6 +58,7 @@ services:
     build: 
       context:  .
       dockerfile:  "WebSearch/Dockerfile"
+
     restart: on-failure 
     depends_on:
        loadbalancer:
@@ -67,6 +68,8 @@ services:
     ports:
       - 9002:80
   cachingapi:
+    ports:
+      - 9003:80
     build: 
       context:  .
       dockerfile:  "CachingAPI/Dockerfile"

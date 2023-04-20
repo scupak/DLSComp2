@@ -34,6 +34,7 @@ db.StringSet("foo", "bar");
 Console.WriteLine(db.StringGet("foo"));
 Console.WriteLine("Called redis");
 */
+/*
 
 var doc = new Document();
 doc.Id = 1;
@@ -45,3 +46,4 @@ CachingService.CachingService.SetData("test", testres);
 SearchResult res = CachingService.CachingService.GetData<SearchResult>("test");
 Console.WriteLine("result from redis");
 Console.WriteLine(res);
+*/
