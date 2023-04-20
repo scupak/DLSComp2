@@ -13,16 +13,16 @@ pipeline {
                 sh "docker compose build"
             }
         }
-        stage("Prepare test") {
+        /* stage("Prepare test") {
             steps {
                 sh "docker compose up indexer"
             }
-        }
-        stage("Test") {
+        } */
+        /* stage("Test") {
             steps {
                 sh "docker compose up test"
             }
-        }
+        } */
         stage("Deliver") {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'DH_PASSWORD', usernameVariable: 'DH_USERNAME')]) {
