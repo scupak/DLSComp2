@@ -17,9 +17,9 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleSearchv2", "ConsoleSearchv2\ConsoleSearchv2.csproj", "{127EBC1D-667E-426B-970E-57DCEAF2F7FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{B327D65C-F7FB-4EBA-B7D5-2E89561E3472}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject", "TestProject\TestProject.csproj", "{B327D65C-F7FB-4EBA-B7D5-2E89561E3472}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CachingAPI", "CachingAPI\CachingAPI.csproj", "{EFF9E99C-0445-4E05-B768-6F49BAD299EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CachingAPI", "CachingAPI\CachingAPI.csproj", "{EFF9E99C-0445-4E05-B768-6F49BAD299EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +55,10 @@ Global
 		{127EBC1D-667E-426B-970E-57DCEAF2F7FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{127EBC1D-667E-426B-970E-57DCEAF2F7FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{127EBC1D-667E-426B-970E-57DCEAF2F7FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B327D65C-F7FB-4EBA-B7D5-2E89561E3472}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B327D65C-F7FB-4EBA-B7D5-2E89561E3472}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B327D65C-F7FB-4EBA-B7D5-2E89561E3472}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B327D65C-F7FB-4EBA-B7D5-2E89561E3472}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EFF9E99C-0445-4E05-B768-6F49BAD299EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EFF9E99C-0445-4E05-B768-6F49BAD299EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFF9E99C-0445-4E05-B768-6F49BAD299EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
