@@ -2,10 +2,20 @@ version:  "3.9"
 
 services:
 
+  indexer: 
+    build: 
+      context:  .
+      dockerfile:  "Indexer/Dockerfile"
+    image: kasp608b/searchengine-indexer:${DEPLOY_NUMBER}  
+    volumes:
+    - C:/data:/data
+
+
   loadbalancer: 
     build: 
       context:  .
       dockerfile:  "LoadBalancer/Dockerfile"
+    image: kasp608b/searchengine-loadbalancer:${DEPLOY_NUMBER}
     ports:
       - 9050:80
     healthcheck:
@@ -18,6 +28,7 @@ services:
     build: 
       context:  .
       dockerfile:  "SearchAPI/Dockerfile"
+    image: kasp608b/searchengine-searchapi:${DEPLOY_NUMBER}
     volumes:
       - C:/data:/data
     deploy:
@@ -35,6 +46,7 @@ services:
     build:
       context:  .
       dockerfile:  "ConsoleSearchv2/Dockerfile"
+    image: kasp608b/searchengine-consolesearch:${DEPLOY_NUMBER}
     deploy:
       mode: replicated
       replicas: 1
@@ -52,6 +64,7 @@ services:
     build: 
       context:  .
       dockerfile:  "WebSearch/Dockerfile"
+    image: kasp608b/searchengine-websearch:${DEPLOY_NUMBER}
     restart: on-failure 
     depends_on:
        loadbalancer:
@@ -60,6 +73,13 @@ services:
         - loadbalancer
     ports:
       - 9002:80
+  
+  test: 
+   build: 
+     context:  .
+     dockerfile:  "TestProject/Dockerfile"
+   volumes:
+    - C:/data:/data
 
 volumes:
   data:
