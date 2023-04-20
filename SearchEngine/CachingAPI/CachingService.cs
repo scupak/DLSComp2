@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 public class CachingService
 {
-    public static async Task<bool> SetData<T>(string key, T data)
+    public static async Task SetData<T>(string key, T data)
     {
         using var redis = ConnectionMultiplexer.Connect("redis");
         IDatabase db = redis.GetDatabase();
-        bool res =  await db.StringSetAsync(key, Newtonsoft.Json.JsonConvert.SerializeObject(data));
+        var hash = new HashEntry[] {
+    new HashEntry(key, Newtonsoft.Json.JsonConvert.SerializeObject(data))
+    };
+
+        await db.HashSetAsync("searchResultChache", hash);
         redis.Close();
-        return res;
     }
 
     public static async Task<T> GetData<T>(string key)
@@ -22,7 +25,7 @@ public class CachingService
             try
             {
                 IDatabase db = redis.GetDatabase();
-                var res = await db.StringGetAsync(key);
+                var res = await db.HashGetAsync("searchResultChache", key);
 
                 redis.Close();
                 if (res.IsNull)

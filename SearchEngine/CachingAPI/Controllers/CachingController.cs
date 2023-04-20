@@ -34,14 +34,10 @@ public class CachingController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddToSearchCache(string terms, [FromBody]SearchResult result)
     {
-        bool res = await CachingService.SetData(terms, result);
-        if (res)
-        {
+         await CachingService.SetData(terms, result);
+     
             return Ok();
-        }
-        else
-        {
-            return StatusCode(500, "Couldn't add to cache");
-        }
+        
+       
     }
 }

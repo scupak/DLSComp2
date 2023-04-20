@@ -15,9 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadBalancer", "LoadBalance
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FBFC4604-A588-4FB9-9AC8-2C8E3347FC39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSearchv2", "ConsoleSearchv2\ConsoleSearchv2.csproj", "{127EBC1D-667E-426B-970E-57DCEAF2F7FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleSearchv2", "ConsoleSearchv2\ConsoleSearchv2.csproj", "{127EBC1D-667E-426B-970E-57DCEAF2F7FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CachingAPI", "CachingAPI\CachingAPI.csproj", "{EFF9E99C-0445-4E05-B768-6F49BAD299EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CachingAPI", "CachingAPI\CachingAPI.csproj", "{EFF9E99C-0445-4E05-B768-6F49BAD299EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheLoadBalancer", "CacheLoadBalancer\CacheLoadBalancer.csproj", "{0051E51F-956E-405D-B784-44844F12DADB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{EFF9E99C-0445-4E05-B768-6F49BAD299EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFF9E99C-0445-4E05-B768-6F49BAD299EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFF9E99C-0445-4E05-B768-6F49BAD299EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0051E51F-956E-405D-B784-44844F12DADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0051E51F-956E-405D-B784-44844F12DADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0051E51F-956E-405D-B784-44844F12DADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0051E51F-956E-405D-B784-44844F12DADB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
