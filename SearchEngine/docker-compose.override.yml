@@ -1,12 +1,61 @@
 version: '3.4'
 
 services:
+ 
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6379:6379
+
   loadbalancer:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    build: 
+      context:  .
+      dockerfile:  "LoadBalancer/Dockerfile"
+    ports:
+      - 9050:80
+    healthcheck:
+        test: ["CMD", "none"]
+
+  searchapi: 
+    build: 
+      context:  .
+      dockerfile:  "SearchAPI/Dockerfile"
+    volumes:
+      - C:/data:/data
+    deploy:
+      mode: replicated
+      replicas: 1
+      endpoint_mode: dnsrr
+    restart: on-failure 
+    depends_on:
+       loadbalancer:
+        condition: service_started
+    links: 
+        - loadbalancer
+
+  consolesearch:
+    build:
+      context:  .
+      dockerfile:  "ConsoleSearchv2/Dockerfile"
+    deploy:
+      mode: replicated
+      replicas: 1
+      endpoint_mode: dnsrr
+    stdin_open: true
+    tty: true    
+    restart: on-failure
+    depends_on:
+      loadbalancer:
+        condition: service_started
+    links:
+      - loadbalancer
 
   websearch:
     environment:
@@ -14,3 +63,29 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    build: 
+      context:  .
+      dockerfile:  "WebSearch/Dockerfile"
+    restart: on-failure 
+    depends_on:
+       loadbalancer:
+        condition: service_started
+    links: 
+        - loadbalancer
+    ports:
+      - 9002:80
+  cachingapi:
+    build: 
+      context:  .
+      dockerfile:  "CachingAPI/Dockerfile"
+    restart: on-failure 
+    depends_on:
+       loadbalancer:
+        condition: service_started
+    links: 
+        - loadbalancer
+
+volumes:
+  data:
+
+ 
