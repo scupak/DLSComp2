@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage("Build") {
             steps {
-                sh "dotnet build"
+                sh "dotnet build SearchEngine.sln"
                 sh "docker compose build"
             }
         }
