@@ -1,6 +1,12 @@
 version:  "3.9"
 
 services:
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6379:6379
 
   loadbalancer: 
     build: 
@@ -60,6 +66,16 @@ services:
         - loadbalancer
     ports:
       - 9002:80
+  cachingapi:
+    build: 
+      context:  .
+      dockerfile:  "CachingAPI/Dockerfile"
+    restart: on-failure 
+    depends_on:
+       loadbalancer:
+        condition: service_healthy
+    links: 
+        - loadbalancer
 
 volumes:
   data:
