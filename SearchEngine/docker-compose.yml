@@ -22,7 +22,7 @@ services:
       - C:/data:/data
     deploy:
       mode: replicated
-      replicas: 5
+      replicas: 1
       endpoint_mode: dnsrr
     restart: on-failure 
     depends_on:
@@ -37,7 +37,7 @@ services:
       dockerfile:  "ConsoleSearchv2/Dockerfile"
     deploy:
       mode: replicated
-      replicas: 5
+      replicas: 1
       endpoint_mode: dnsrr
     stdin_open: true
     tty: true    
