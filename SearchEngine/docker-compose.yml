@@ -1,6 +1,12 @@
 version:  "3.9"
 
 services:
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6379:6379
 
   indexer: 
     build: 
@@ -80,6 +86,17 @@ services:
      dockerfile:  "TestProject/Dockerfile"
    volumes:
     - C:/data:/data
+  cachingapi:
+    build: 
+      context:  .
+      dockerfile:  "CachingAPI/Dockerfile"
+    image: kasp608b/searchengine-cachingapi:${DEPLOY_NUMBER}
+    restart: on-failure 
+    depends_on:
+       loadbalancer:
+        condition: service_healthy
+    links: 
+        - loadbalancer
 
 volumes:
   data:
