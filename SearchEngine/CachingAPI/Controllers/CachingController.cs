@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Common;
 
 namespace CachingService.Controllers;
 
@@ -6,7 +7,11 @@ namespace CachingService.Controllers;
 [Route("[controller]")]
 public class CachingController : ControllerBase
 {
-    public CachingController()
+   
+
+    public CachingController( )
     {
+        
+        
     }
 }

@@ -1,3 +1,4 @@
+using Common;
 using NRedisStack;
 using NRedisStack.RedisStackCommands;
 using StackExchange.Redis;
@@ -33,3 +34,14 @@ db.StringSet("foo", "bar");
 Console.WriteLine(db.StringGet("foo"));
 Console.WriteLine("Called redis");
 */
+
+var doc = new Document();
+doc.Id = 1;
+doc.NumberOfAppearances = 1;
+doc.Path = "path";
+SearchResult testres = new SearchResult{ Documents = new List<Document>{doc}, EllapsedMiliseconds = 1, IgnoredTerms = new List<string>{"test"}};
+CachingService.CachingService.SetData("test", testres);
+        
+SearchResult res = CachingService.CachingService.GetData<SearchResult>("test");
+Console.WriteLine("result from redis");
+Console.WriteLine(res);
