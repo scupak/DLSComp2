@@ -18,7 +18,7 @@ public class CachingController : ControllerBase
     [HttpGet]
     public async Task<SearchResult> CheckSearchCache(string terms)
     {
-        var res = await CachingService.GetData<SearchResult>(terms);
+        var res = await CachingService.GetData<SearchResult>("searchResultCache", terms);
 
         if (res == null)
         {
@@ -30,11 +30,23 @@ public class CachingController : ControllerBase
 
 
     }
+    [HttpGet("GetAll")]
+    public async Task<SearchResult[]> GetWholeHash()
+    {
+        var res = await CachingService.GetWholeHash<SearchResult>("searchResultCache");
 
-    [HttpPost]
+        if (res == null)
+        {
+            return null;
+        }
+
+        return res;
+    }
+
+        [HttpPost]
     public async Task<IActionResult> AddToSearchCache(string terms, [FromBody]SearchResult result)
     {
-         await CachingService.SetData(terms, result);
+         await CachingService.SetData("searchResultCache",terms , result);
      
             return Ok();
         
