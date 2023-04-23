@@ -16,6 +16,7 @@
 -->
 <div style="justify-content: center; align-items: center; display: flex; flex-direction: column">
   <span>Input search terms</span>
+  <!--<span>Test Test Test</span>-->
   <div class="mb-5" style="display: inline">
     <input [(ngModel)]="searchTerms" class="mb-2" style="justify-content: center; align-items: center">
     <button (click)="search(searchTerms)">Search</button>
@@ -23,8 +24,10 @@
 
   <div *ngIf="searchResult" style="justify-content: space-around">
 
-    <span>Time used: {{searchResult.ellapsedMiliseconds / 60}}
-      - Number of hits: {{searchResult.documents.length}}  </span>
+    <span>
+      Time used: {{searchResult.ellapsedMiliseconds / 60}}
+      - Number of hits: {{searchResult.documents.length}}
+    </span>
     <ul>
       <li *ngFor="let document of searchResult.documents">
         <h6><b>{{document.path}}</b></h6>
