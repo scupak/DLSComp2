@@ -47,6 +47,8 @@ public class SearchController : ControllerBase
         DateTime now = DateTime.Now;
         result.SearchDateTime = now;
 
+        result.SearchTerms = terms;
+
         int idx = 0;
         foreach (var doc in await mSearchLogic.GetDocumentDetails(top))
         {
