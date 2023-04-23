@@ -18,11 +18,12 @@ public class CacheServiceGateway : IServiceGateway<SearchResult>
         //this.baseUrl + '/LoadBalancer/Search?terms=' + searchTerms + "&numberOfResults=" + 10
         var request = new RestRequest($"http://{serviceName}/Caching?{parameters}");
         var response = await client.GetAsync(request);
-        
+        if (response.StatusCode == HttpStatusCode.NoContent)
+            return null;
+
         response.ThrowIfError();
 
-        if (response.Content == null)
-            return null;
+        
 
         if (response.StatusCode == HttpStatusCode.OK && response.Content != null)
             return Newtonsoft.Json.JsonConvert.DeserializeObject<SearchResult>(response.Content) ??

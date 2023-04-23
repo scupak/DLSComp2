@@ -1,6 +1,8 @@
 ﻿using Common;
 using ConsoleSearch;
 using Microsoft.AspNetCore.Mvc;
+using RestSharp;
+using System.Net;
 
 namespace SearchAPI.Controllers;
 
@@ -16,7 +18,18 @@ public class SearchController : ControllerBase
         var searchTerms = terms.Split(" ", StringSplitOptions.RemoveEmptyEntries);
         var mSearchLogic = new SearchLogic(new Database());
         var result = new SearchResult();
-        
+        var client = new RestClient("http://cacheloadBalancer");
+
+        var request = new RestRequest("/CacheLoadBalancer/CheckSearchCache");
+        request.AddQueryParameter("terms", terms);
+        var response = await client.GetAsync(request);
+
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            result = Newtonsoft.Json.JsonConvert.DeserializeObject<SearchResult>(response.Content);
+            return result;
+        }
+
         foreach (var t in searchTerms)
         {
             int id = mSearchLogic.GetIdOf(t);
@@ -58,6 +71,27 @@ public class SearchController : ControllerBase
             idx++;
         }
         Console.WriteLine("Documents: " + docIds.Count + ". Time: " + used.TotalMilliseconds);
+        try
+        {
+            var postRequest = new RestRequest("/CacheLoadBalancer/AddToCache");
+            postRequest.AddJsonBody(result);
+            var postResponse = await client.PostAsync(postRequest);
+
+            if (postResponse.IsSuccessful)
+            {
+                Console.WriteLine($"Cache updated with: {result}");
+            }
+        }
+        catch (Exception e ) 
+        {
+            Console.WriteLine(e);
+        }
+            
+        
+        
+
+        
+
         return result;
     }
 
