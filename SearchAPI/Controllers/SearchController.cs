@@ -44,6 +44,9 @@ public class SearchController : ControllerBase
         TimeSpan used = DateTime.Now - start;
         result.EllapsedMiliseconds = used.TotalMilliseconds;
 
+        DateTime now = DateTime.Now;
+        result.SearchDateTime = now;
+
         int idx = 0;
         foreach (var doc in await mSearchLogic.GetDocumentDetails(top))
         {
