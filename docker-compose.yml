@@ -30,6 +30,19 @@ services:
       timeout: 10s
       retries: 5
 
+  cacheloadBalancer:
+    image: kasp608b/searchengine-cacheloadbalancer:${DEPLOY_NUMBER}
+    build: 
+      context:  .
+      dockerfile:  "CacheLoadBalancer/Dockerfile"
+    ports:
+      - 9051:80
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://cacheloadbalancer/CacheLoadBalancer/ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
   searchapi:
     ports:
       - 9010:80
@@ -98,6 +111,8 @@ services:
     restart: on-failure 
     depends_on:
        loadbalancer:
+        condition: service_healthy
+       cacheloadBalancer:
         condition: service_healthy
     links: 
         - loadbalancer

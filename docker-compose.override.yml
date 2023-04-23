@@ -31,6 +31,16 @@ services:
     healthcheck:
         test: ["CMD", "none"]
 
+  cacheloadBalancer:
+    image: kasp608b/searchengine-cacheloadbalancer
+    build: 
+      context:  .
+      dockerfile:  "CacheLoadBalancer/Dockerfile"
+    ports:
+      - 9051:80
+    healthcheck:
+      test: ["CMD", "none"]
+
   searchapi:
     image: kasp608b/searchengine-searchapi
     build: 
@@ -95,6 +105,8 @@ services:
     restart: on-failure 
     depends_on:
        loadbalancer:
+        condition: service_started
+       cacheloadBalancer:
         condition: service_started
     links: 
         - loadbalancer

@@ -83,6 +83,124 @@ namespace CacheLoadBalancer.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAllFromCache")]
+        public async Task<IActionResult> GetAllFromCache()
+        {
+            Console.WriteLine("GetAllFromCache has been called");
+            try
+            {
+                var pingResult = false;
+                var serviceName = "";
+
+                while (!pingResult)
+                {
+                    serviceName = _loadBalancer.NextService();
+                    pingResult = await _serviceGateway.Ping(serviceName);
+                    if (!pingResult)
+                    {
+                        _loadBalancer.RemoveService(serviceName);
+                        Console.WriteLine("removed service: " + serviceName);
+                    }
+
+                    if (_loadBalancer.GetAllServices().Count <= 0)
+                    {
+                        return StatusCode(503, "No Services Available");
+                    }
+                }
+
+                _loadBalancer.IncrementServiceConnections(serviceName);
+                Console.WriteLine("successfully pinged: " + serviceName + " Getting result...");
+                var result = await _serviceGateway.GetAll(serviceName);
+
+                if (result == null)
+                {
+                    var message = "Not in cache";
+                    Console.WriteLine(message);
+                    return StatusCode(204, message);
+
+                }
+
+                Console.WriteLine("successfully got result from: " + serviceName);
+                _loadBalancer.DecrementServiceConnections(serviceName);
+                return new ObjectResult(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine("Couldn't Connect to service");
+                Console.WriteLine(ex);
+
+                return StatusCode(503, ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Search result was null");
+                Console.WriteLine(ex);
+                return StatusCode(404, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something Went Wrong");
+                Console.WriteLine(ex);
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpPost]
+        [Route("AddToCache")]
+        public async Task<IActionResult> AddToCache([FromBody] SearchResult searchResult)
+        {
+            Console.WriteLine("AddToCache has been called");
+            try
+            {
+                var pingResult = false;
+                var serviceName = "";
+
+                while (!pingResult)
+                {
+                    serviceName = _loadBalancer.NextService();
+                    pingResult = await _serviceGateway.Ping(serviceName);
+                    if (!pingResult)
+                    {
+                        _loadBalancer.RemoveService(serviceName);
+                        Console.WriteLine("removed service: " + serviceName);
+                    }
+
+                    if (_loadBalancer.GetAllServices().Count <= 0)
+                    {
+                        return StatusCode(503, "No Services Available");
+                    }
+                }
+
+                _loadBalancer.IncrementServiceConnections(serviceName);
+                Console.WriteLine("successfully pinged: " + serviceName + " Getting result...");
+                var result = await _serviceGateway.Post(serviceName, $"terms={searchResult.SearchTerms}", searchResult);
+
+
+                Console.WriteLine("successfully got result from: " + serviceName);
+                _loadBalancer.DecrementServiceConnections(serviceName);
+                return new ObjectResult(result);
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine("Couldn't Connect to service");
+                Console.WriteLine(ex);
+
+                return StatusCode(503, ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Search result was null");
+                Console.WriteLine(ex);
+                return StatusCode(404, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something Went Wrong");
+                Console.WriteLine(ex);
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPost]
         [Route("AddService")]
         public async Task<IActionResult> AddService(string serviceName)

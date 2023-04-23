@@ -16,6 +16,7 @@ public class SearchController : ControllerBase
         var searchTerms = terms.Split(" ", StringSplitOptions.RemoveEmptyEntries);
         var mSearchLogic = new SearchLogic(new Database());
         var result = new SearchResult();
+        
         foreach (var t in searchTerms)
         {
             int id = mSearchLogic.GetIdOf(t);

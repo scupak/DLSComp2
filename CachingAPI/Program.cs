@@ -1,3 +1,4 @@
+using CachingService;
 using Common;
 using NRedisStack;
 using NRedisStack.RedisStackCommands;
@@ -25,6 +26,9 @@ app.UseCors(config => config.AllowAnyOrigin());
 app.UseAuthorization();
 
 app.MapControllers();
+
+var initializer = new Initializer();
+initializer.registerWithLoadBalancer();
 
 app.Run();
 /*

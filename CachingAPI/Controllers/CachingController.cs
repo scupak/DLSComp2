@@ -52,4 +52,12 @@ public class CachingController : ControllerBase
         
        
     }
+
+    [HttpGet]
+    [Route("ping")]
+    public IActionResult Ping()
+    {
+        Console.WriteLine("Ping");
+        return Ok("ping");
+    }
 }
