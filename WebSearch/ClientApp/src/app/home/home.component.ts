@@ -32,6 +32,8 @@ export class HomeComponent {
 
 interface SearchResult {
   ellapsedMiliseconds: number;
+
+  SearchDateTime: Date;
   ignoredTerms: string[];
   documents: Document[];
 
