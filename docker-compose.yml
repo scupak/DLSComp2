@@ -44,8 +44,6 @@ services:
       retries: 5
 
   searchapi:
-    ports:
-      - 9010:80
     build: 
       context:  .
       dockerfile:  "SearchAPI/Dockerfile"
@@ -54,7 +52,7 @@ services:
       - C:/data:/data
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 5
       endpoint_mode: dnsrr
     restart: on-failure 
     depends_on:
@@ -102,8 +100,6 @@ services:
    volumes:
     - C:/data:/data
   cachingapi:
-    ports:
-      - 9003:80
     build: 
       context:  .
       dockerfile:  "CachingAPI/Dockerfile"

@@ -50,7 +50,7 @@ services:
       - C:/data:/data
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 5
       endpoint_mode: dnsrr
     restart: on-failure 
     depends_on:
@@ -97,12 +97,14 @@ services:
       - 9002:80
   cachingapi:
     image: kasp608b/searchengine-cachingapi
-    ports:
-       - 9003:80
     build: 
       context:  .
       dockerfile:  "CachingAPI/Dockerfile"
     restart: on-failure 
+    deploy:
+      mode: replicated
+      replicas: 5
+      endpoint_mode: dnsrr
     depends_on:
        loadbalancer:
         condition: service_started
