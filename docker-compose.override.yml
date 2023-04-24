@@ -6,7 +6,6 @@ services:
     build: 
       context:  .
       dockerfile:  "Indexer/Dockerfile"
-    image: kasp608b/searchengine-indexer
     volumes:
     - C:/data:/data
   redis:
@@ -17,7 +16,6 @@ services:
       - 6379:6379
 
   loadbalancer:
-    image: kasp608b/searchengine-loadbalancer
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     volumes:
@@ -32,7 +30,6 @@ services:
         test: ["CMD", "none"]
 
   cacheloadBalancer:
-    image: kasp608b/searchengine-cacheloadbalancer
     build: 
       context:  .
       dockerfile:  "CacheLoadBalancer/Dockerfile"
@@ -42,7 +39,6 @@ services:
       test: ["CMD", "none"]
 
   searchapi:
-    image: kasp608b/searchengine-searchapi
     build: 
       context:  .
       dockerfile:  "SearchAPI/Dockerfile"
@@ -60,7 +56,6 @@ services:
         - loadbalancer
 
   consolesearch:
-    image: kasp608b/searchengine-consolesearch
     build:
       context:  .
       dockerfile:  "ConsoleSearchv2/Dockerfile"
@@ -78,7 +73,6 @@ services:
       - loadbalancer
 
   websearch:
-    image: kasp608b/searchengine-websearch
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     volumes:
@@ -96,7 +90,6 @@ services:
     ports:
       - 9002:80
   cachingapi:
-    image: kasp608b/searchengine-cachingapi
     build: 
       context:  .
       dockerfile:  "CachingAPI/Dockerfile"
