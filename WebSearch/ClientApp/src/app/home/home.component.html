@@ -26,7 +26,7 @@
       <div>Search History</div>
       <select [ngModel]="selectedOldSearch" (ngModelChange)="setOldSearches($event)" name="oldSearchSelect">
         <option value="" selected disabled hidden>Choose old search</option>
-        <option [ngValue]="oldSearch" *ngFor="let oldSearch of oldSearches">{{oldSearch.SearchTerms}}</option>
+        <option [ngValue]="oldSearch" *ngFor="let oldSearch of oldSearches">{{oldSearch.searchTerms}}</option>
       </select>
     </div>
   </div>

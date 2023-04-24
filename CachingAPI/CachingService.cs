@@ -62,6 +62,7 @@ public class CachingService
                         resDeserialized.Add(Newtonsoft.Json.JsonConvert.DeserializeObject<T>(item.Value));
 
                     }
+
                     return resDeserialized.ToArray();
                 }
                 catch (Exception e)

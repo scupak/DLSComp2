@@ -113,6 +113,8 @@ namespace CacheLoadBalancer.Controllers
                 Console.WriteLine("successfully pinged: " + serviceName + " Getting result...");
                 var result = await _serviceGateway.GetAll(serviceName);
 
+                
+
                 if (result == null)
                 {
                     var message = "Not in cache";
@@ -121,9 +123,12 @@ namespace CacheLoadBalancer.Controllers
 
                 }
 
+              var sortedResult =  result.OrderByDescending(s =>  s.SearchDateTime.Date )
+                    .ThenByDescending(s => s.SearchDateTime.TimeOfDay);
+
                 Console.WriteLine("successfully got result from: " + serviceName);
                 _loadBalancer.DecrementServiceConnections(serviceName);
-                return new ObjectResult(result);
+                return new ObjectResult(sortedResult);
             }
             catch (HttpRequestException ex)
             {
