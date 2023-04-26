@@ -103,13 +103,16 @@ services:
     build: 
       context:  .
       dockerfile:  "CachingAPI/Dockerfile"
-    image: kasp608b/searchengine-cachingapi:${DEPLOY_NUMBER}
     restart: on-failure 
+    deploy:
+      mode: replicated
+      replicas: 5
+      endpoint_mode: dnsrr
     depends_on:
        loadbalancer:
-        condition: service_healthy
+        condition: service_started
        cacheloadBalancer:
-        condition: service_healthy
+        condition: service_started
     links: 
         - loadbalancer
 
